@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { LockIcon, MailIcon } from 'lucide-react-native'; // Ensure you have the correct version
 import { useNavigation } from '@react-navigation/native';
-import axios from '../../api/axiosInstance'; // Verify this path is correct
+//import axios from '../../api/axiosInstance'; // Verify this path is correct
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Make sure AsyncStorage is installed
 
 export const Login = () => {
