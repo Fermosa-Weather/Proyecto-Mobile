@@ -7,6 +7,8 @@ import {
   Modal,
   StyleSheet,
   FlatList,
+  Dimensions,
+  ScrollView, // Importa ScrollView
 } from 'react-native';
 
 interface Article {
@@ -29,24 +31,21 @@ const Noticias: React.FC<NewsWidgetProps> = ({ searchTerm = '' }) => {
     fetch('http://localhost:4000/api/noticia/all')
       .then(response => response.json())
       .then(data => {
-        console.log('Datos recibidos:', data); // Log para verificar la respuesta
         if (Array.isArray(data)) {
           setArticles(data);
         } else {
-          console.error('Se esperaba un arreglo pero se obtuvo:', data);
-          setArticles([]); // Establecer a un arreglo vacío si no es válido
+          setArticles([]);
         }
       })
-      .catch(error => {
-        console.error('Error al obtener los artículos:', error);
-        setArticles([]); // Establecer a un arreglo vacío en caso de error
+      .catch(() => {
+        setArticles([]);
       });
   }, []);
 
-  const filteredNews = Array.isArray(articles) ? articles.filter(news =>
+  const filteredNews = articles.filter(news =>
     news.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     news.description.toLowerCase().includes(searchTerm.toLowerCase())
-  ) : [];
+  );
 
   const handleShowModal = (index: number) => {
     setCurrentNewsIndex(index);
@@ -55,14 +54,13 @@ const Noticias: React.FC<NewsWidgetProps> = ({ searchTerm = '' }) => {
 
   const renderItem = ({ item, index }: { item: Article; index: number }) => (
     <TouchableOpacity
-      key={index}
       style={styles.newsCard}
       onPress={() => handleShowModal(index)}
     >
       <Image
         source={{ uri: item.image || 'https://via.placeholder.com/150' }}
         style={styles.newsImage}
-        onError={() => {}} // Fallback logic handled via the default image
+        onError={() => {}} // Handle error with a placeholder
       />
       <View style={styles.newsContent}>
         <Text style={styles.newsCardTitle}>{item.title}</Text>
@@ -72,88 +70,96 @@ const Noticias: React.FC<NewsWidgetProps> = ({ searchTerm = '' }) => {
   );
 
   return (
-    <View style={styles.newsWidget}>
-      <Text style={styles.newsTitle}>Noticias sobre el Clima en Formosa</Text>
-      <FlatList
-        data={filteredNews}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={styles.newsGrid}
-      />
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.newsWidget}>
+        <Text style={styles.newsTitle}>Noticias sobre el Clima en Formosa</Text>
+        <FlatList
+          data={filteredNews}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={styles.newsGrid}
+          numColumns={2}
+        />
 
-      {showModal && currentNewsIndex !== null && (
-        <Modal
-          transparent={true}
-          animationType="slide"
-          visible={showModal}
-          onRequestClose={() => setShowModal(false)}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>
-                {filteredNews[currentNewsIndex].title}
-              </Text>
-              <View style={styles.modalBody}>
-                <Text>{filteredNews[currentNewsIndex].description}</Text>
+        {showModal && currentNewsIndex !== null && (
+          <Modal
+            transparent={true}
+            animationType="slide"
+            visible={showModal}
+            onRequestClose={() => setShowModal(false)}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>
+                  {filteredNews[currentNewsIndex].title}
+                </Text>
+                <View style={styles.modalBody}>
+                  <Text>{filteredNews[currentNewsIndex].description}</Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.modalClose}
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.closeText}>Cerrar</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={styles.modalClose}
-                onPress={() => setShowModal(false)}
-              >
-                <Text style={{ color: 'white' }}>Cerrar</Text>
-              </TouchableOpacity>
             </View>
-          </View>
-        </Modal>
-      )}
-    </View>
+          </Modal>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   newsWidget: {
     backgroundColor: '#6a1b9a',
     padding: 20,
-    borderRadius: 10,
-    minHeight: 600,
+    borderRadius: 15,
+    minHeight: Dimensions.get('window').height * 0.6,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
     elevation: 5,
   },
   newsTitle: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 20,
     textAlign: 'center',
   },
   newsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    paddingBottom: 20,
   },
   newsCard: {
     backgroundColor: 'white',
     borderRadius: 10,
-    marginBottom: 15,
-    width: '48%',
+    margin: 5,
+    flex: 1,
+    maxWidth: '48%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowRadius: 4,
     elevation: 2,
   },
   newsImage: {
     width: '100%',
-    height: 150,
+    height: 140,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    resizeMode: 'cover',
   },
   newsContent: {
-    padding: 10,
+    padding: 12,
     backgroundColor: '#f3e5f5',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   newsCardTitle: {
     fontSize: 18,
@@ -167,31 +173,40 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#f3e5f5',
+    backgroundColor: '#fff',
     padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    maxWidth: 600,
+    borderRadius: 15,
+    width: '85%',
+    maxWidth: 500,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#4a148c',
+    color: '#6a1b9a',
   },
   modalBody: {
     paddingVertical: 10,
+    marginBottom: 20,
   },
   modalClose: {
     backgroundColor: '#1e88e5',
     borderRadius: 5,
-    padding: 10,
+    padding: 12,
     alignItems: 'center',
-    marginTop: 10,
+  },
+  closeText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 

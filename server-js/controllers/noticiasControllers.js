@@ -18,13 +18,15 @@ const filePath = '../noticia.json'; // Ruta al archivo donde se guardarán los a
 // GET - Obtener los artículos del archivo
 export const getNew = async (req, res) => {
     // Leer el archivo JSON con los artículos
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error al leer el archivo de artículos:', err);
-            return res.status(500).json({ message: 'Error al leer los artículos.' });
-        }
-        const articles = JSON.parse(data); // Convertir el contenido del archivo a un array de objetos
-        res.status(200).json(articles); // Devolver el array de artículos
-    });
+    const response = await fetch('http://localhost:5000/api/news');
+    res.status(200).json(await response.json())
+    // fs.readFile(filePath, 'utf8', (err, data) => {
+    //     if (err) {
+    //         console.error('Error al leer el archivo de artículos:', err);
+    //         return res.status(500).json({ message: 'Error al leer los artículos.' });
+    //     }
+    //     const articles = JSON.parse(data); // Convertir el contenido del archivo a un array de objetos
+    //     res.status(200).json(articles); // Devolver el array de artículos
+    // });
 };
 

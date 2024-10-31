@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Welcome() {
@@ -8,8 +8,8 @@ export default function Welcome() {
   return (
     <ImageBackground
       source={require('../../assets/images/fondo2.jpg')} 
-      style={styles.background} // Usamos un solo estilo aquí
-      resizeMode="cover" // Cambiado a "cover" para ajustar la imagen
+      style={styles.background}
+      resizeMode="cover"
     >
       <View style={styles.container}>
         <View style={styles.content}>
@@ -36,16 +36,16 @@ export default function Welcome() {
 
 const styles = StyleSheet.create({
   background: {
-    flex: 1, // Ocupar toda la pantalla
-    justifyContent: 'center', // Centrar verticalmente
-    alignItems: 'center', // Centrar horizontalmente
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
+    flex: 1, // Cambiado a flex: 1 para ocupar toda la pantalla
     flexDirection: 'column',
     alignItems: 'center',
     paddingHorizontal: 16,
-    maxWidth: 350,
-    marginLeft: -600, // Mantén este valor para mover el contenedor más a la izquierda
+    paddingVertical: 20, // Añadir padding vertical
   },
   content: {
     alignItems: 'center',
@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     padding: 16,
     borderRadius: 10,
+    width: '100%', // Asegurar que ocupa el ancho disponible
+    maxWidth: 350,
   },
   title: {
     fontSize: 32,
@@ -65,8 +67,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#0c443a',
     textAlign: 'justify',
-    maxWidth: 700,
     marginBottom: 20,
+    lineHeight: 22, // Mejorar legibilidad
   },
   btn: {
     backgroundColor: '#25d1b2',
