@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import { Card, Badge, Progress } from '@/components/ui'; // Asegúrate de tener componentes similares en React Native
+import Card from '@/components/ui/Card';
+import Progress from '@/components/ui/Progress';
+import Badge from '@/components/ui/Badge';
+
+ 
 import {
   Sun,
   Cloud,
@@ -22,11 +26,18 @@ const WeatherPage: React.FC = () => {
 
   useEffect(() => {
     const fetchWeatherData = async () => {
-      const response = await fetch(
-        'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/formosa%20argentina?unitGroup=metric&key=UMQ9KWF37S9T6WL8J4WLN5Q23&contentType=json'
-      );
-      const data = await response.json();
-      setWeatherData(data);
+      try {
+        const response = await fetch(
+          'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/formosa%20argentina?unitGroup=metric&key=UMQ9KWF37S9T6WL8J4WLN5Q23&contentType=json'
+        );
+        if (!response.ok) {
+          throw new Error('Error al cargar los datos meteorológicos');
+        }
+        const data = await response.json();
+        setWeatherData(data);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     fetchWeatherData();
@@ -227,20 +238,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   currentTemp: {
-    fontSize: 48,
+    fontSize: 40,
     fontWeight: 'bold',
+    marginLeft: 8,
   },
   currentCondition: {
-    fontSize: 18,
-  },
-  details: {
-    alignItems: 'flex-end',
-  },
-  detailText: {
     fontSize: 16,
   },
+  details: {
+    marginLeft: 16,
+  },
+  detailText: {
+    fontSize: 14,
+  },
   detailsContainer: {
-    marginTop: 16,
+    padding: 16,
   },
   detailsTitle: {
     fontSize: 18,
@@ -252,34 +264,37 @@ const styles = StyleSheet.create({
   },
   hourlyForecastContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
+    paddingVertical: 8,
   },
   hourlyForecastItem: {
-    width: '20%',
     alignItems: 'center',
-    marginBottom: 8,
   },
   hourText: {
-    fontSize: 16,
+    fontSize: 12,
   },
   hourTemp: {
     fontSize: 16,
+    fontWeight: 'bold',
   },
   hourCondition: {
-    fontSize: 14,
+    fontSize: 12,
   },
   dailyCard: {
     marginBottom: 16,
+    backgroundColor: '#E1BEE7',
+    borderRadius: 8,
+    padding: 16,
   },
   dailyTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   dailyContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical: 8,
   },
   dailyInfo: {
     flexDirection: 'row',
@@ -289,10 +304,8 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   dailyTemp: {
-    fontSize: 20,
-  },
-  dailyDetailText: {
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   dailyProbabilities: {
     marginTop: 8,
@@ -300,26 +313,25 @@ const styles = StyleSheet.create({
   probabilityText: {
     fontSize: 14,
   },
-  icon: {
-    width: 40,
-    height: 40,
-    marginRight: 8,
-  },
-  iconSmall: {
-    width: 30,
-    height: 30,
-  },
-  iconMedium: {
-    width: 35,
-    height: 35,
-  },
   detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 4,
+    marginBottom: 8,
   },
   detailIcon: {
     marginRight: 8,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
+  iconSmall: {
+    width: 24,
+    height: 24,
+  },
+  iconMedium: {
+    width: 32,
+    height: 32,
   },
 });
 

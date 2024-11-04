@@ -6,7 +6,7 @@ module.exports = function (api) {
       ['module-resolver', {
         root: ['./'],
         alias: {
-          '@': './app', // Ajusta la ruta si tu carpeta de componentes está en otro lugar
+          '@': './', // Ajusta la ruta si tu carpeta de componentes está en otro lugar
         },
       }],
     ],
