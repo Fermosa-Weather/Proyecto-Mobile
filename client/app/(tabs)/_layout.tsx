@@ -39,21 +39,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="about"
         options={{
-          title: 'Acerca',
+          title: 'Acerca de',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'info' : 'info-outline'} color={color} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="login"
-        options={{
-          title: 'Iniciar Sesión',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
-          ),
-        }}
-      />
+ 
       <Tabs.Screen
         name="noticias"
         options={{
@@ -66,7 +58,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="weather"
         options={{
-          title: 'Clima',
+          title: 'El Tiempo',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'cloud' : 'cloud-outline'} color={color} />
           ),

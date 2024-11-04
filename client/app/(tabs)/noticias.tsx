@@ -28,7 +28,7 @@ const Noticias: React.FC<NewsWidgetProps> = ({ searchTerm = '' }) => {
   const [currentNewsIndex, setCurrentNewsIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/noticia/all')
+    fetch('http://localhost:5000/api/news')
       .then(response => response.json())
       .then(data => {
         if (Array.isArray(data)) {
