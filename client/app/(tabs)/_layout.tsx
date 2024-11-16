@@ -1,13 +1,13 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import LoginScreen from './login'; // Import the Login screen
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -65,7 +65,7 @@ export default function TabLayout() {
         options={{
           title: 'Mapa',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'map' : 'map-outline'} color={color} />
+            <TabBarIcon name={focused ? 'location' : 'location-outline'} color={color} />
           ),
         }}
       />
@@ -84,10 +84,21 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    height: 60, // Ajusta la altura de la barra de pestañas
-    paddingBottom: 5, // Relleno inferior
-    paddingTop: 5, // Relleno superior
-    width: width * 0.9, // Ajusta el ancho al 90% del ancho de la pantalla
-    alignSelf: 'center', // Centra la barra de pestañas
+    height: Platform.OS === 'ios' ? 70 : 60, // Mayor altura para iOS
+    paddingBottom: Platform.OS === 'ios' ? 10 : 5,
+    paddingTop: Platform.OS === 'ios' ? 10 : 5,
+    width: '100%', // Ajustar al 100% del ancho disponible
+    alignSelf: 'center',
+    borderRadius: 20, // Bordes redondeados para mejor estética
+    backgroundColor: '#fff', // Fondo blanco para mayor contraste
+    shadowColor: '#000', // Sombra para iOS
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3, // Elevación para Android
+    position: 'absolute',
+    bottom: 0, // Colocar la barra en la parte inferior
+    left: 0,
+    right: 0,
+    paddingHorizontal: 10, // Asegurarse de que no toque los bordes
   },
 });

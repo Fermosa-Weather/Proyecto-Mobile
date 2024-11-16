@@ -1,53 +1,58 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Asegúrate de importar el icono
 
 const AcercaNosotros = () => {
   const navigation = useNavigation();
 
+  // Definir screenWidth
+  const screenWidth = Dimensions.get('window').width;
+
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.headerContainer}>
-          <Icon name="info-circle" size={30} color="#1565c0" style={styles.icon} />
-          <Text style={styles.header}>Sobre CIFOR</Text>
-        </View>
-        
-        <View style={styles.block}>
-          <Text style={styles.paragraph}>
-            En <Text style={styles.boldText}>CIFOR</Text> nos dedicamos a proporcionar datos climáticos precisos y en tiempo real de toda la provincia de Formosa, 
-            recopilados de nuestras 10 estaciones meteorológicas. Nuestro objetivo es mejorar los pronósticos del tiempo, desarrollar modelos 
-            agrícolas y generar estadísticas climáticas confiables, contribuyendo así al conocimiento y la gestión del cambio climático.
-          </Text>
-        </View>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.headerContainer}>
+            <Icon name="info-circle" size={30} color="#1565c0" style={styles.icon} />
+            <Text style={styles.header}>Sobre CIFOR</Text>
+          </View>
 
-        <View style={[styles.block, styles.mission]}>
-          <Text style={styles.sectionHeader}>Nuestra Misión</Text>
-          <Text style={styles.paragraph}>
-            Mejorar la precisión de los pronósticos meteorológicos para la provincia de Formosa mediante la recopilación y análisis de datos 
-            de nuestras estaciones meteorológicas. Queremos apoyar a los agricultores y a la comunidad en general con información confiable 
-            para la gestión del cambio climático.
-          </Text>
-        </View>
+          <View style={styles.block}>
+            <Text style={styles.paragraph}>
+              En <Text style={styles.boldText}>CIFOR</Text> nos dedicamos a proporcionar datos climáticos precisos y en tiempo real de toda la provincia de Formosa, 
+              recopilados de nuestras 10 estaciones meteorológicas. Nuestro objetivo es mejorar los pronósticos del tiempo, desarrollar modelos 
+              agrícolas y generar estadísticas climáticas confiables, contribuyendo así al conocimiento y la gestión del cambio climático.
+            </Text>
+          </View>
 
-        <View style={[styles.block, styles.vision]}>
-          <Text style={styles.sectionHeader}>Nuestra Visión</Text>
-          <Text style={styles.paragraph}>
-            Ser la principal fuente de datos climáticos en Formosa, expandiendo nuestras capacidades y mejorando continuamente la calidad 
-            y precisión de nuestras predicciones. Buscamos ser un referente en la investigación y desarrollo de soluciones para el cambio 
-            climático y el manejo agrícola.
-          </Text>
-        </View>
+          <View style={[styles.block, styles.mission]}>
+            <Text style={styles.sectionHeader}>Nuestra Misión</Text>
+            <Text style={styles.paragraph}>
+              Mejorar la precisión de los pronósticos meteorológicos para la provincia de Formosa mediante la recopilación y análisis de datos 
+              de nuestras estaciones meteorológicas. Queremos apoyar a los agricultores y a la comunidad en general con información confiable 
+              para la gestión del cambio climático.
+            </Text>
+          </View>
 
-        <View style={[styles.block, styles.contact]}>
-          <Text style={styles.sectionHeader}>Contáctanos</Text>
-          <Text style={styles.paragraph}>
-            Nuestro equipo de soporte está aquí para ayudarte. Revisaremos tu consulta con la mayor prontitud posible y nos pondremos en contacto contigo a la brevedad.
-          </Text>
+          <View style={[styles.block, styles.vision]}>
+            <Text style={styles.sectionHeader}>Nuestra Visión</Text>
+            <Text style={styles.paragraph}>
+              Ser la principal fuente de datos climáticos en Formosa, expandiendo nuestras capacidades y mejorando continuamente la calidad 
+              y precisión de nuestras predicciones. Buscamos ser un referente en la investigación y desarrollo de soluciones para el cambio 
+              climático y el manejo agrícola.
+            </Text>
+          </View>
+
+          <View style={[styles.block, styles.contact]}>
+            <Text style={styles.sectionHeader}>Contáctanos</Text>
+            <Text style={styles.paragraph}>
+              Nuestro equipo de soporte está aquí para ayudarte. Revisaremos tu consulta con la mayor prontitud posible y nos pondremos en contacto contigo a la brevedad.
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

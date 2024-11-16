@@ -7,7 +7,7 @@ const LoginScreen = ({ navigation }: any) => {
 
   const handleLogin = async () => {
     // Reemplaza con la URL de tu API backend
-    const url = 'http://localhost:4000/api';
+    const url = 'http://localhost:5000/api/auth';
 
     // Datos que enviarás al backend
     const payload = {
