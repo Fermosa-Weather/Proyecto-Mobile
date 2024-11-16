@@ -5,6 +5,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import LoginScreen from './login'; // Import the Login screen
 
 const { width } = Dimensions.get('window');
 
@@ -17,7 +18,8 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarStyle: styles.tabBar,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -27,25 +29,19 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explorar',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="about"
         options={{
           title: 'Acerca de',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'info' : 'info-outline'} color={color} />
+            <TabBarIcon
+              name={focused ? 'ios-information-circle' : 'ios-information-circle-outline'}
+              color={color}
+            />
           ),
         }}
       />
- 
       <Tabs.Screen
         name="noticias"
         options={{
@@ -65,11 +61,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="map"
+        name="mapa"
         options={{
           title: 'Mapa',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'map' : 'map-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="login"
+        options={{
+          title: 'Iniciar sesión',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
           ),
         }}
       />
@@ -79,10 +84,10 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    height: 60, // Ajustar altura del tab bar
-    paddingBottom: 5, // Espaciado inferior
-    paddingTop: 5, // Espaciado superior
-    width: width * 0.9, // Ajustar el ancho al 90% de la pantalla
-    alignSelf: 'center', // Centrar el tab bar
+    height: 60, // Ajusta la altura de la barra de pestañas
+    paddingBottom: 5, // Relleno inferior
+    paddingTop: 5, // Relleno superior
+    width: width * 0.9, // Ajusta el ancho al 90% del ancho de la pantalla
+    alignSelf: 'center', // Centra la barra de pestañas
   },
 });

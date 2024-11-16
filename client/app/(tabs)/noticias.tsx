@@ -116,9 +116,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   newsWidget: {
-    backgroundColor: '#6a1b9a',
+    backgroundColor: 'linear-gradient(to bottom right, #6a1b9a, #1976d2, #6a1b9a)', // Gradiente de colores que proporcionaste
     padding: 20,
-    borderRadius: 15,
     minHeight: Dimensions.get('window').height * 0.6,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
@@ -199,7 +198,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalClose: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: '#1976d2',
     borderRadius: 5,
     padding: 12,
     alignItems: 'center',

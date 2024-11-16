@@ -4,7 +4,6 @@ import Card from '@/components/ui/Card';
 import Progress from '@/components/ui/Progress';
 import Badge from '@/components/ui/Badge';
 
- 
 import {
   Sun,
   Cloud,
@@ -19,7 +18,7 @@ import {
   Umbrella,
   Sunrise,
   Sunset,
-} from 'lucide-react-native'; // Asegúrate de tener los íconos en React Native
+} from 'lucide-react-native';
 
 const WeatherPage: React.FC = () => {
   const [weatherData, setWeatherData] = useState<any>(null);
@@ -46,7 +45,7 @@ const WeatherPage: React.FC = () => {
   if (!weatherData) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#4A90E2" />
         <Text style={styles.loadingText}>Cargando datos meteorológicos...</Text>
       </View>
     );
@@ -70,19 +69,19 @@ const WeatherPage: React.FC = () => {
   }[current.conditions] || current.conditions;
 
   const weatherIcons = {
-    Clear: <Sun style={styles.icon} />,
-    'Partly Cloudy': <Cloud style={styles.icon} />,
-    Cloudy: <Cloud style={styles.icon} />,
-    Rain: <CloudRain style={styles.icon} />,
-    Thunderstorms: <CloudLightning style={styles.icon} />,
-    Snow: <Snowflake style={styles.icon} />,
-    Fog: <CloudFog style={styles.icon} />,
-    Windy: <Wind style={styles.icon} />,
-    Overcast: <Cloud style={styles.icon} />,
-    Drizzle: <CloudDrizzle style={styles.icon} />,
-    Showers: <CloudRain style={styles.icon} />,
-    'Freezing Rain': <CloudRain style={styles.icon} />,
-    Sleet: <CloudRain style={styles.icon} />,
+    Clear: <Sun style={styles.icon} color="#FFD700" />,
+    'Partly Cloudy': <Cloud style={styles.icon} color="#A9A9A9" />,
+    Cloudy: <Cloud style={styles.icon} color="#708090" />,
+    Rain: <CloudRain style={styles.icon} color="#4682B4" />,
+    Thunderstorms: <CloudLightning style={styles.icon} color="#4B0082" />,
+    Snow: <Snowflake style={styles.icon} color="#E0FFFF" />,
+    Fog: <CloudFog style={styles.icon} color="#D3D3D3" />,
+    Windy: <Wind style={styles.icon} color="#00CED1" />,
+    Overcast: <Cloud style={styles.icon} color="#708090" />,
+    Drizzle: <CloudDrizzle style={styles.icon} color="#B0E0E6" />,
+    Showers: <CloudRain style={styles.icon} color="#4682B4" />,
+    'Freezing Rain': <CloudRain style={styles.icon} color="#87CEFA" />,
+    Sleet: <CloudRain style={styles.icon} color="#B0C4DE" />,
   };
 
   return (
@@ -94,7 +93,7 @@ const WeatherPage: React.FC = () => {
           <Text style={styles.currentConditionsTitle}>Condiciones actuales</Text>
           <View style={styles.currentConditions}>
             <View style={styles.currentConditionsInfo}>
-              {weatherIcons[current.conditions] || <Droplet style={styles.icon} />}
+              {weatherIcons[current.conditions] || <Droplet style={styles.icon} color="#4A90E2" />}
               <Text style={styles.currentTemp}>{current.temp}°C</Text>
               <Text style={styles.currentCondition}>{currentCondition}</Text>
             </View>
@@ -106,28 +105,28 @@ const WeatherPage: React.FC = () => {
           </View>
         </View>
 
-        <Card>
+        <Card style={styles.card}>
           <Text style={styles.detailsTitle}>Detalles</Text>
           <View style={styles.detailsContainer}>
-            <DetailRow icon={<Sunrise />} label="Amanecer" value={current.sunrise} />
-            <DetailRow icon={<Sunset />} label="Atardecer" value={current.sunset} />
-            <DetailRow icon={<Umbrella />} label="Precipitación" value={`${current.precip} mm`} />
-            <DetailRow icon={<Thermometer />} label="Presión" value={`${current.pressure} hPa`} />
+            <DetailRow icon={<Sunrise color="#FF6347" />} label="Amanecer" value={current.sunrise} />
+            <DetailRow icon={<Sunset color="#FF4500" />} label="Atardecer" value={current.sunset} />
+            <DetailRow icon={<Umbrella color="#4682B4" />} label="Precipitación" value={`${current.precip} mm`} />
+            <DetailRow icon={<Thermometer color="#FF6347" />} label="Presión" value={`${current.pressure} hPa`} />
           </View>
         </Card>
 
-        <Card>
+        <Card style={styles.card}>
           <Text style={styles.forecastTitle}>Pronóstico por horas</Text>
-          <View style={styles.hourlyForecastContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.hourlyForecastContainer}>
             {weatherData.days[0].hours.map((hour: any, index: number) => (
               <View key={index} style={styles.hourlyForecastItem}>
                 <Text style={styles.hourText}>{hour.datetime.slice(0, 5)}</Text>
-                {weatherIcons[hour.conditions] || <Droplet style={styles.iconSmall} />}
+                {weatherIcons[hour.conditions] || <Droplet style={styles.iconSmall} color="#4A90E2" />}
                 <Text style={styles.hourTemp}>{hour.temp}°C</Text>
                 <Text style={styles.hourCondition}>{hour.conditions}</Text>
               </View>
             ))}
-          </View>
+          </ScrollView>
         </Card>
 
         <View style={styles.dailyForecastContainer}>
@@ -149,7 +148,7 @@ const WeatherPage: React.FC = () => {
                 Sleet: 'Aguacero de Hielo',
               }[day.conditions] || day.conditions;
 
-            const dailyIcon = weatherIcons[day.conditions] || <Droplet style={styles.iconMedium} />;
+            const dailyIcon = weatherIcons[day.conditions] || <Droplet style={styles.iconMedium} color="#4A90E2" />;
 
             return (
               <Card key={day.datetime} style={styles.dailyCard}>
@@ -165,7 +164,7 @@ const WeatherPage: React.FC = () => {
                     {dailyIcon}
                     <View style={styles.dailyText}>
                       <Text style={styles.dailyTemp}>{day.temp}°C</Text>
-                      <Badge>{dailyCondition}</Badge>
+                      <Badge style={styles.badge}>{dailyCondition}</Badge>
                     </View>
                   </View>
                   <View style={styles.dailyDetails}>
@@ -175,9 +174,9 @@ const WeatherPage: React.FC = () => {
                 </View>
                 <View style={styles.dailyProbabilities}>
                   <Text style={styles.probabilityText}>Probabilidad de lluvia</Text>
-                  <Progress value={day.precipprob} />
+                  <Progress value={day.precipprob} style={styles.progress} />
                   <Text style={styles.probabilityText}>Humedad</Text>
-                  <Progress value={day.humidity} />
+                  <Progress value={day.humidity} style={styles.progress} />
                 </View>
               </Card>
             );
@@ -191,8 +190,8 @@ const WeatherPage: React.FC = () => {
 const DetailRow: React.FC<{ icon: React.ReactNode; label: string; value: string }> = ({ icon, label, value }) => (
   <View style={styles.detailRow}>
     <View style={styles.detailIcon}>{icon}</View>
-    <Text>{label}</Text>
-    <Text>{value}</Text>
+    <Text style={styles.detailLabel}>{label}</Text>
+    <Text style={styles.detailValue}>{value}</Text>
   </View>
 );
 
@@ -200,7 +199,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F0F8FF',
+    backgroundColor: '#E6E6FA', // Light purple background
   },
   loadingContainer: {
     flex: 1,
@@ -210,23 +209,31 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 8,
     fontSize: 18,
+    color: '#4A90E2',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 16,
+    color: '#4B0082', // Indigo
   },
   currentConditionsContainer: {
     marginBottom: 16,
-    backgroundColor: '#E0F7FA',
+    backgroundColor: '#E0F7FA', // Light cyan
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   currentConditionsTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#1E90FF', // Dodger blue
   },
   currentConditions: {
     flexDirection: 'row',
@@ -241,54 +248,77 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     marginLeft: 8,
+    color: '#4169E1', // Royal blue
   },
   currentCondition: {
     fontSize: 16,
+    color: '#4682B4', // Steel blue
   },
   details: {
     marginLeft: 16,
   },
   detailText: {
     fontSize: 14,
+    color: '#4682B4', // Steel blue
+  },
+  card: {
+    backgroundColor: '#F0F8FF', // Alice blue
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   detailsContainer: {
-    padding: 16,
+    padding: 8,
   },
   detailsTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#4B0082', // Indigo
   },
   dailyForecastContainer: {
     marginTop: 16,
   },
   hourlyForecastContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
+    marginTop: 8,
   },
   hourlyForecastItem: {
     alignItems: 'center',
+    marginRight: 16,
   },
   hourText: {
     fontSize: 12,
+    color: '#4682B4', // Steel blue
   },
   hourTemp: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#4169E1', // Royal blue
   },
   hourCondition: {
     fontSize: 12,
+    color: '#4682B4', // Steel blue
   },
   dailyCard: {
     marginBottom: 16,
-    backgroundColor: '#E1BEE7',
-    borderRadius: 8,
+    backgroundColor: '#E6E6FA', // Lavender
+    borderRadius: 12,
     padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   dailyTitle: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#4B0082', // Indigo
   },
   dailyContent: {
     flexDirection: 'row',
@@ -306,12 +336,14 @@ const styles = StyleSheet.create({
   dailyTemp: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#4169E1', // Royal blue
   },
   dailyProbabilities: {
     marginTop: 8,
   },
   probabilityText: {
     fontSize: 14,
+    color: '#4682B4', // Steel blue
   },
   detailRow: {
     flexDirection: 'row',
@@ -320,6 +352,16 @@ const styles = StyleSheet.create({
   },
   detailIcon: {
     marginRight: 8,
+  },
+  detailLabel: {
+    flex: 1,
+    fontSize: 14,
+    color: '#4682B4', // Steel blue
+  },
+  detailValue: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#4169E1', // Royal blue
   },
   icon: {
     width: 40,
@@ -332,6 +374,27 @@ const styles = StyleSheet.create({
   iconMedium: {
     width: 32,
     height: 32,
+  },
+  badge: {
+    backgroundColor:  '#B0E0E6', // Powder blue
+    borderColor: '#4682B4', // Steel blue
+  },
+  progress: {
+    backgroundColor: '#B0E0E6', // Powder blue
+    fillColor: '#4169E1', // Royal blue
+  },
+  forecastTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#4B0082', // Indigo
+  },
+  dailyDetails: {
+    alignItems: 'flex-end',
+  },
+  dailyDetailText: {
+    fontSize: 14,
+    color: '#4682B4', // Steel blue
   },
 });
 
