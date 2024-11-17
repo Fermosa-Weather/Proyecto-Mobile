@@ -1,10 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, Image, StyleSheet, ImageBackground } from 'react-native';
 
 export default function Welcome() {
-  const navigation = useNavigation();
-
   return (
     <ImageBackground
       source={require('../../assets/images/fondo-cifor.avif')} 
@@ -19,9 +16,6 @@ export default function Welcome() {
             clima en tu región. Desde pronósticos detallados hasta mapas interactivos, nuestro sitio web te brinda las
             herramientas y datos precisos que necesitas para planificar tus actividades con confianza.
           </Text>
-          <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('')}>
-            <Text style={styles.btnText}>Ver más</Text>
-          </TouchableOpacity>
         </View>
         <Image
           source={require('../../assets/images/logo-cifor.png')}
@@ -41,11 +35,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    flex: 1, // Cambiado a flex: 1 para ocupar toda la pantalla
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 20, // Añadir padding vertical
+    paddingVertical: 20,
   },
   content: {
     alignItems: 'center',
@@ -53,7 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     padding: 16,
     borderRadius: 10,
-    width: '100%', // Asegurar que ocupa el ancho disponible
+    width: '100%',
     maxWidth: 350,
   },
   title: {
@@ -68,21 +62,7 @@ const styles = StyleSheet.create({
     color: '#0c443a',
     textAlign: 'justify',
     marginBottom: 20,
-    lineHeight: 22, // Mejorar legibilidad
-  },
-  btn: {
-    backgroundColor: '#25d1b2',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 4 },
-  },
-  btnText: {
-    fontSize: 16,
-    color: '#fff',
+    lineHeight: 22,
   },
   image: {
     width: '100%',

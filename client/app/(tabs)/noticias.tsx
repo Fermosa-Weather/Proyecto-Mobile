@@ -72,7 +72,7 @@ const Noticias: React.FC<NewsWidgetProps> = ({ searchTerm = '' }) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.newsWidget}>
-        <Text style={styles.newsTitle}>Noticias sobre el Clima en Formosa</Text>
+        <Text style={styles.newsTitle}>Noticias sobre el Tiempo en Formosa</Text>
         <FlatList
           data={filteredNews}
           renderItem={renderItem}
@@ -126,11 +126,17 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   newsTitle: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 20,
+    color: '#1976d2', // Azul vibrante
+    backgroundColor: 'transparent', // Sin fondo para mantener el enfoque en la letra
     textAlign: 'center',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+    textShadowColor: 'rgba(25, 118, 210, 0.4)', // Sombra azul clara
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
   },
   newsGrid: {
     paddingBottom: 20,
@@ -146,6 +152,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
+    flexDirection: 'column', // Asegura que el contenido de la card esté apilado verticalmente
   },
   newsImage: {
     width: '100%',
@@ -155,10 +162,12 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   newsContent: {
+    flex: 1, // Asegura que la descripción ocupe todo el espacio disponible
     padding: 12,
     backgroundColor: '#f3e5f5',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
+    justifyContent: 'space-between', // Asegura que el contenido tenga espacio entre los elementos
   },
   newsCardTitle: {
     fontSize: 18,
