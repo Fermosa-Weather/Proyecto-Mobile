@@ -5,7 +5,6 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import LoginScreen from './login'; // Import the Login screen
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,19 +25,6 @@ export default function TabLayout() {
           title: 'Inicio',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="about"
-        options={{
-          title: 'Acerca de',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? 'ios-information-circle' : 'ios-information-circle-outline'}
-              color={color}
-            />
           ),
         }}
       />
@@ -66,15 +52,6 @@ export default function TabLayout() {
           title: 'Mapa',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'location' : 'location-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="login"
-        options={{
-          title: 'Iniciar sesión',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
           ),
         }}
       />
