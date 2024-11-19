@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Card from '@/components/ui/Card';
 import Progress from '@/components/ui/Progress';
 import Badge from '@/components/ui/Badge';
@@ -44,10 +45,12 @@ const WeatherPage: React.FC = () => {
 
   if (!weatherData) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4A90E2" />
-        <Text style={styles.loadingText}>Cargando datos meteorológicos...</Text>
-      </View>
+      <LinearGradient colors={['#1a237e', '#4a148c']} style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#ffffff" />
+          <Text style={styles.loadingText}>Cargando datos meteorológicos...</Text>
+        </View>
+      </LinearGradient>
     );
   }
 
@@ -85,7 +88,7 @@ const WeatherPage: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#1a237e', '#4a148c']} style={styles.container}>
       <Text style={styles.title}>Pronóstico del Tiempo - Formosa, Argentina</Text>
 
       <ScrollView>
@@ -183,7 +186,7 @@ const WeatherPage: React.FC = () => {
           })}
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -199,7 +202,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#E6E6FA', // Light purple background
   },
   loadingContainer: {
     flex: 1,
@@ -209,31 +211,26 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 8,
     fontSize: 18,
-    color: '#4A90E2',
+    color: 'black',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 16,
-    color: '#4B0082', // Indigo
+    color: 'black',
   },
   currentConditionsContainer: {
     marginBottom: 16,
-    backgroundColor: '#E0F7FA', // Light cyan
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 16,
     borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   currentConditionsTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#1E90FF', // Dodger blue
+    color: 'black',
   },
   currentConditions: {
     flexDirection: 'row',
@@ -248,29 +245,24 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     marginLeft: 8,
-    color: '#4169E1', // Royal blue
+    color: '#ffffff',
   },
   currentCondition: {
     fontSize: 16,
-    color: '#4682B4', // Steel blue
+    color: '#ffffff',
   },
   details: {
     marginLeft: 16,
   },
   detailText: {
     fontSize: 14,
-    color: '#4682B4', // Steel blue
+    color: 'black',
   },
   card: {
-    backgroundColor: '#F0F8FF', // Alice blue
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   detailsContainer: {
     padding: 8,
@@ -279,7 +271,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#4B0082', // Indigo
+    color: 'black',
   },
   dailyForecastContainer: {
     marginTop: 16,
@@ -293,32 +285,27 @@ const styles = StyleSheet.create({
   },
   hourText: {
     fontSize: 12,
-    color: '#4682B4', // Steel blue
+    color: 'black',
   },
   hourTemp: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#4169E1', // Royal blue
+    color: 'black',
   },
   hourCondition: {
     fontSize: 12,
-    color: '#4682B4', // Steel blue
+    color: 'black',
   },
   dailyCard: {
     marginBottom: 16,
-    backgroundColor: '#E6E6FA', // Lavender
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 12,
     padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   dailyTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#4B0082', // Indigo
+    color: 'black',
   },
   dailyContent: {
     flexDirection: 'row',
@@ -336,14 +323,14 @@ const styles = StyleSheet.create({
   dailyTemp: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#4169E1', // Royal blue
+    color: '#ffffff',
   },
   dailyProbabilities: {
     marginTop: 8,
   },
   probabilityText: {
     fontSize: 14,
-    color: '#4682B4', // Steel blue
+    color: 'black',
   },
   detailRow: {
     flexDirection: 'row',
@@ -356,12 +343,12 @@ const styles = StyleSheet.create({
   detailLabel: {
     flex: 1,
     fontSize: 14,
-    color: '#4682B4', // Steel blue
+    color: 'black',
   },
   detailValue: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#4169E1', // Royal blue
+    color: 'black',
   },
   icon: {
     width: 40,
@@ -376,25 +363,25 @@ const styles = StyleSheet.create({
     height: 32,
   },
   badge: {
-    backgroundColor:  '#B0E0E6', // Powder blue
-    borderColor: '#4682B4', // Steel blue
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: '#ffffff',
   },
   progress: {
-    backgroundColor: '#B0E0E6', // Powder blue
-    fillColor: '#4169E1', // Royal blue
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    fillColor: '#ffffff',
   },
   forecastTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#4B0082', // Indigo
+    color: 'black',
   },
   dailyDetails: {
     alignItems: 'flex-end',
   },
   dailyDetailText: {
     fontSize: 14,
-    color: '#4682B4', // Steel blue
+    color: 'black',
   },
 });
 

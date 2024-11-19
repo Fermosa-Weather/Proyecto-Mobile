@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
@@ -16,7 +17,15 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: styles.tabBarContainer,
+        tabBarBackground: () => (
+          <LinearGradient
+            colors={['#4B0082', '#0000FF']} // Gradiente de violeta a azul
+            start={[0, 0]} // Esquina superior izquierda
+            end={[1, 1]} // Esquina inferior derecha
+            style={StyleSheet.absoluteFillObject} // Rellenar todo el espacio disponible
+          />
+        ),
       }}
     >
       <Tabs.Screen
@@ -60,22 +69,17 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
-    height: Platform.OS === 'ios' ? 70 : 60, // Mayor altura para iOS
+  tabBarContainer: {
+    height: Platform.OS === 'ios' ? 70 : 60, // Altura ajustada para iOS y Android
     paddingBottom: Platform.OS === 'ios' ? 10 : 5,
     paddingTop: Platform.OS === 'ios' ? 10 : 5,
-    width: '100%', // Ajustar al 100% del ancho disponible
+    width: '100%', // Ancho completo
     alignSelf: 'center',
-    borderRadius: 20, // Bordes redondeados para mejor estética
-    backgroundColor: '#fff', // Fondo blanco para mayor contraste
-    shadowColor: '#000', // Sombra para iOS
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3, // Elevación para Android
     position: 'absolute',
-    bottom: 0, // Colocar la barra en la parte inferior
+    bottom: 0,
     left: 0,
     right: 0,
-    paddingHorizontal: 10, // Asegurarse de que no toque los bordes
+    overflow: 'hidden', // Asegura que el gradiente no se desborde
+    paddingHorizontal: 10, // Margen horizontal
   },
 });

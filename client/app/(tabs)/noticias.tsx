@@ -8,8 +8,9 @@ import {
   StyleSheet,
   FlatList,
   Dimensions,
-  ScrollView, // Importa ScrollView
+  ScrollView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface Article {
   title: string;
@@ -22,7 +23,7 @@ interface NewsWidgetProps {
   searchTerm?: string;
 }
 
-const Noticias: React.FC<NewsWidgetProps> = ({ searchTerm = '' }) => {
+export default function Component({ searchTerm = '' }: NewsWidgetProps) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [currentNewsIndex, setCurrentNewsIndex] = useState<number | null>(null);
@@ -70,71 +71,71 @@ const Noticias: React.FC<NewsWidgetProps> = ({ searchTerm = '' }) => {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.newsWidget}>
-        <Text style={styles.newsTitle}>Noticias sobre el Tiempo en Formosa</Text>
-        <FlatList
-          data={filteredNews}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={styles.newsGrid}
-          numColumns={2}
-        />
+    <LinearGradient
+      colors={['#1a237e', '#4a148c']}
+      style={styles.gradientBackground}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.newsWidget}>
+          <Text style={styles.newsTitle}>Noticias sobre el Tiempo en Formosa</Text>
+          <FlatList
+            data={filteredNews}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={styles.newsGrid}
+            numColumns={2}
+          />
 
-        {showModal && currentNewsIndex !== null && (
-          <Modal
-            transparent={true}
-            animationType="slide"
-            visible={showModal}
-            onRequestClose={() => setShowModal(false)}
-          >
-            <View style={styles.modalOverlay}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>
-                  {filteredNews[currentNewsIndex].title}
-                </Text>
-                <View style={styles.modalBody}>
-                  <Text>{filteredNews[currentNewsIndex].description}</Text>
+          {showModal && currentNewsIndex !== null && (
+            <Modal
+              transparent={true}
+              animationType="slide"
+              visible={showModal}
+              onRequestClose={() => setShowModal(false)}
+            >
+              <View style={styles.modalOverlay}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>
+                    {filteredNews[currentNewsIndex].title}
+                  </Text>
+                  <View style={styles.modalBody}>
+                    <Text>{filteredNews[currentNewsIndex].description}</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.modalClose}
+                    onPress={() => setShowModal(false)}
+                  >
+                    <Text style={styles.closeText}>Cerrar</Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={styles.modalClose}
-                  onPress={() => setShowModal(false)}
-                >
-                  <Text style={styles.closeText}>Cerrar</Text>
-                </TouchableOpacity>
               </View>
-            </View>
-          </Modal>
-        )}
-      </View>
-    </ScrollView>
+            </Modal>
+          )}
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
-};
+}
 
 const styles = StyleSheet.create({
+  gradientBackground: {
+    flex: 1,
+  },
   scrollContainer: {
     flexGrow: 1,
   },
   newsWidget: {
-    backgroundColor: 'linear-gradient(to bottom right, #6a1b9a, #1976d2, #6a1b9a)', // Gradiente de colores que proporcionaste
     padding: 20,
     minHeight: Dimensions.get('window').height * 0.6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
   },
   newsTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1976d2', // Azul vibrante
-    backgroundColor: 'transparent', // Sin fondo para mantener el enfoque en la letra
+    color: '#ffffff',
     textAlign: 'center',
     padding: 15,
-    borderRadius: 8,
     marginBottom: 20,
-    textShadowColor: 'rgba(25, 118, 210, 0.4)', // Sombra azul clara
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
   },
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
-    flexDirection: 'column', // Asegura que el contenido de la card esté apilado verticalmente
+    flexDirection: 'column',
   },
   newsImage: {
     width: '100%',
@@ -162,12 +163,12 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   newsContent: {
-    flex: 1, // Asegura que la descripción ocupe todo el espacio disponible
+    flex: 1,
     padding: 12,
     backgroundColor: '#f3e5f5',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-    justifyContent: 'space-between', // Asegura que el contenido tenga espacio entre los elementos
+    justifyContent: 'space-between',
   },
   newsCardTitle: {
     fontSize: 18,
@@ -217,5 +218,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default Noticias;
