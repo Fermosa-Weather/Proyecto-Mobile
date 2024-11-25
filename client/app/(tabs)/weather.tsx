@@ -113,7 +113,7 @@ const WeatherPage: React.FC = () => {
           <View style={styles.detailsContainer}>
             <DetailRow icon={<Sunrise color="#FF6347" />} label="Amanecer" value={current.sunrise} />
             <DetailRow icon={<Sunset color="#FF4500" />} label="Atardecer" value={current.sunset} />
-            <DetailRow icon={<Umbrella color="#4682B4" />} label="Precipitación" value={`${current.precip} mm`} />
+            <DetailRow icon={<Umbrella color="#4682B4" />} label="Precipitación" value={current.precip ? `${current.precip} mm` : "N/A"} />
             <DetailRow icon={<Thermometer color="#FF6347" />} label="Presión" value={`${current.pressure} hPa`} />
           </View>
         </Card>
