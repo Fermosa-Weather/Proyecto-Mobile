@@ -1,206 +1,205 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Card from '@/components/ui/Card';
-import Progress from '@/components/ui/Progress';
-import Badge from '@/components/ui/Badge';
+import { View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
 
-import {
-  Sun,
-  Cloud,
-  CloudRain,
-  CloudLightning,
-  Snowflake,
-  Wind,
-  CloudFog,
-  Droplet,
-  CloudDrizzle,
-  Thermometer,
-  Umbrella,
-  Sunrise,
-  Sunset,
-} from 'lucide-react-native';
+// Import weather icons
+import sol from '../../images/icons_weather/sol.png';
+import nubes from '../../images/icons_weather/parcialmente_nublado.png';
+import parcialmente_nublado from '../../images/icons_weather/nube.png';
+import lluvia from '../../images/icons_weather/lluvia.png';
+import tormenta from '../../images/icons_weather/tormenta.png';
+import nieve from '../../images/icons_weather/niieve.png';
+import niebla from '../../images/icons_weather/niebla.png';
+import viento from '../../images/icons_weather/viento.png';
+import llovizna from '../../images/icons_weather/llovizna.png';
+
+const LoadingSpinner = () => (
+  <View style={styles.loadingContainer}>
+    <ActivityIndicator size="large" color="#0000ff" />
+    <Text style={styles.loadingText}>Cargando datos del tiempo...</Text>
+  </View>
+);
 
 const WeatherPage: React.FC = () => {
   const [weatherData, setWeatherData] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(
-          'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/formosa%20argentina?unitGroup=metric&key=UMQ9KWF37S9T6WL8J4WLN5Q23&contentType=json'
-        );
-        if (!response.ok) {
-          throw new Error('Error al cargar los datos meteorológicos');
-        }
+        const response = await fetch('https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/formosa%20argentina?unitGroup=metric&key=UMQ9KWF37S9T6WL8J4WLN5Q23&contentType=json');
         const data = await response.json();
         setWeatherData(data);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching weather data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchWeatherData();
   }, []);
 
-  if (!weatherData) {
-    return (
-      <LinearGradient colors={['#1a237e', '#4a148c']} style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#ffffff" />
-          <Text style={styles.loadingText}>Cargando datos meteorológicos...</Text>
-        </View>
-      </LinearGradient>
-    );
+  if (loading) {
+    return <LoadingSpinner />;
   }
+
+  const daysOfWeek = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+  const monthsOfYear = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+  const currentDate = new Date();
+  const formattedDate = `${daysOfWeek[currentDate.getDay()]} ${currentDate.getDate()} de ${monthsOfYear[currentDate.getMonth()]}`;
 
   const current = weatherData.currentConditions;
   const currentCondition = {
-    Clear: 'Despejado',
-    'Partly Cloudy': 'Parcialmente Nublado',
-    Cloudy: 'Nublado',
-    Rain: 'Lluvia',
-    Thunderstorms: 'Tormentas',
-    Snow: 'Nieve',
-    Fog: 'Niebla',
-    Windy: 'Ventoso',
-    Overcast: 'Cubierto',
-    Drizzle: 'Llovizna',
-    Showers: 'Aguaceros',
+    'Clear': 'Despejado',
+    'Partially cloudy': 'Parcialmente Nublado',
+    'Cloudy': 'Nublado',
+    'Rain': 'Lluvia',
+    'Thunderstorms': 'Tormentas',
+    'Snow': 'Nieve',
+    'Fog': 'Niebla',
+    'Windy': 'Ventoso',
+    'Overcast': 'Cubierto',
+    'Drizzle': 'Llovizna',
+    'Showers': 'Aguaceros',
     'Freezing Rain': 'Lluvia Helada',
-    Sleet: 'Aguacero de Hielo',
+    'Sleet': 'Aguacero de Hielo',
   }[current.conditions] || current.conditions;
 
-  const weatherIcons = {
-    Clear: <Sun style={styles.icon} color="#FFD700" />,
-    'Partly Cloudy': <Cloud style={styles.icon} color="#A9A9A9" />,
-    Cloudy: <Cloud style={styles.icon} color="#708090" />,
-    Rain: <CloudRain style={styles.icon} color="#4682B4" />,
-    Thunderstorms: <CloudLightning style={styles.icon} color="#4B0082" />,
-    Snow: <Snowflake style={styles.icon} color="#E0FFFF" />,
-    Fog: <CloudFog style={styles.icon} color="#D3D3D3" />,
-    Windy: <Wind style={styles.icon} color="#00CED1" />,
-    Overcast: <Cloud style={styles.icon} color="#708090" />,
-    Drizzle: <CloudDrizzle style={styles.icon} color="#B0E0E6" />,
-    Showers: <CloudRain style={styles.icon} color="#4682B4" />,
-    'Freezing Rain': <CloudRain style={styles.icon} color="#87CEFA" />,
-    Sleet: <CloudRain style={styles.icon} color="#B0C4DE" />,
+  const weatherIcons: { [key: string]: any } = {
+    'Clear': sol,
+    'Partially cloudy': nubes,
+    'Cloudy': nubes,
+    'Rain': lluvia,
+    'Thunderstorms': tormenta,
+    'Snow': nieve,
+    'Fog': niebla,
+    'Windy': viento,
+    'Overcast': parcialmente_nublado,
+    'Drizzle': llovizna,
+    'Showers': lluvia,
+    'Freezing Rain': lluvia,
+    'Sleet': lluvia,
   };
 
+  const getIcon = (condition: string) => {
+    for (const conditionKey in weatherIcons) {
+      if (condition.startsWith(conditionKey)) {
+        return weatherIcons[conditionKey];
+      }
+    }
+    return null;
+  };
+
+  const labels = weatherData.days.slice(1, 16).map((day: any) => new Date(day.datetime).toLocaleDateString('es-AR', { weekday: 'short' }));
+  const maxTemps = weatherData.days.slice(1, 16).map((day: any) => day.tempmax);
+  const minTemps = weatherData.days.slice(1, 16).map((day: any) => day.tempmin);
+
   return (
-    <LinearGradient colors={['#1a237e', '#4a148c']} style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>Pronóstico del Tiempo - Formosa, Argentina</Text>
+      <Text style={styles.date}>{formattedDate}</Text>
 
-      <ScrollView>
-        <View style={styles.currentConditionsContainer}>
-          <Text style={styles.currentConditionsTitle}>Condiciones actuales</Text>
-          <View style={styles.currentConditions}>
-            <View style={styles.currentConditionsInfo}>
-              {weatherIcons[current.conditions] || <Droplet style={styles.icon} color="#4A90E2" />}
-              <Text style={styles.currentTemp}>{current.temp}°C</Text>
-              <Text style={styles.currentCondition}>{currentCondition}</Text>
-            </View>
-            <View style={styles.details}>
-              <Text style={styles.detailText}>Sensación térmica: {current.feelslike}°C</Text>
-              <Text style={styles.detailText}>Humedad: {current.humidity}%</Text>
-              <Text style={styles.detailText}>Viento: {current.windspeed} km/h</Text>
-            </View>
+      <View style={styles.currentConditions}>
+        <View style={styles.currentMain}>
+          <Image source={getIcon(current.conditions)} style={styles.weatherIcon} />
+          <View>
+            <Text style={styles.temperature}>{current.temp}°C</Text>
+            <Text style={styles.condition}>{currentCondition}</Text>
           </View>
         </View>
+        <View style={styles.currentDetails}>
+          <Text style={styles.detailText}>Sensación térmica: {current.feelslike}°C</Text>
+          <Text style={styles.detailText}>Humedad: {current.humidity}%</Text>
+          <Text style={styles.detailText}>Viento: {current.windspeed} km/h</Text>
+        </View>
+      </View>
 
-        <Card style={styles.card}>
-          <Text style={styles.detailsTitle}>Detalles</Text>
-          <View style={styles.detailsContainer}>
-            <DetailRow icon={<Sunrise color="#FF6347" />} label="Amanecer" value={current.sunrise} />
-            <DetailRow icon={<Sunset color="#FF4500" />} label="Atardecer" value={current.sunset} />
-            <DetailRow icon={<Umbrella color="#4682B4" />} label="Precipitación" value={current.precip ? `${current.precip} mm` : "N/A"} />
-            <DetailRow icon={<Thermometer color="#FF6347" />} label="Presión" value={`${current.pressure} hPa`} />
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Detalles</Text>
+        <View style={styles.detailsGrid}>
+          <Text style={styles.detailText}>Amanecer: {current.sunrise}</Text>
+          <Text style={styles.detailText}>Atardecer: {current.sunset}</Text>
+          <Text style={styles.detailText}>Precipitación: {current.precip ? `${current.precip} mm` : "N/A"}</Text>
+          <Text style={styles.detailText}>Presión: {current.pressure} hPa</Text>
+        </View>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Pronóstico por horas</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {weatherData.days[0].hours.map((hour: any, index: number) => (
+            <View key={index} style={styles.hourlyForecast}>
+              <Text style={styles.hourlyTime}>{hour.datetime.slice(0, 5)}</Text>
+              <Image source={getIcon(hour.conditions)} style={styles.smallWeatherIcon} />
+              <Text style={styles.hourlyTemp}>{hour.temp}°C</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+
+      <View style={styles.dailyForecastContainer}>
+        {weatherData.days.slice(1, 9).map((day: any, index: number) => (
+          <View key={index} style={styles.dailyForecast}>
+            <Text style={styles.dailyDate}>
+              {new Date(day.datetime).toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric' })}
+            </Text>
+            <Image source={getIcon(day.conditions)} style={styles.smallWeatherIcon} />
+            <View style={styles.dailyTemps}>
+              <Text style={styles.maxTemp}>{day.tempmax}°C</Text>
+              <Text style={styles.minTemp}>{day.tempmin}°C</Text>
+            </View>
           </View>
-        </Card>
+        ))}
+      </View>
 
-        <Card style={styles.card}>
-          <Text style={styles.forecastTitle}>Pronóstico por horas</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.hourlyForecastContainer}>
-            {weatherData.days[0].hours.map((hour: any, index: number) => (
-              <View key={index} style={styles.hourlyForecastItem}>
-                <Text style={styles.hourText}>{hour.datetime.slice(0, 5)}</Text>
-                {weatherIcons[hour.conditions] || <Droplet style={styles.iconSmall} color="#4A90E2" />}
-                <Text style={styles.hourTemp}>{hour.temp}°C</Text>
-                <Text style={styles.hourCondition}>{hour.conditions}</Text>
-              </View>
-            ))}
-          </ScrollView>
-        </Card>
-
-        <View style={styles.dailyForecastContainer}>
-          {weatherData.days.slice(1, 8).map((day: any) => {
-            const dailyCondition =
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Gráfico de Temperaturas (15 Días)</Text>
+        <LineChart
+          data={{
+            labels: labels,
+            datasets: [
               {
-                Clear: 'Despejado',
-                'Partly Cloudy': 'Parcialmente Nublado',
-                Cloudy: 'Nublado',
-                Rain: 'Lluvia',
-                Thunderstorms: 'Tormentas',
-                Snow: 'Nieve',
-                Fog: 'Niebla',
-                Windy: 'Ventoso',
-                Overcast: 'Cubierto',
-                Drizzle: 'Llovizna',
-                Showers: 'Aguaceros',
-                'Freezing Rain': 'Lluvia Helada',
-                Sleet: 'Aguacero de Hielo',
-              }[day.conditions] || day.conditions;
-
-            const dailyIcon = weatherIcons[day.conditions] || <Droplet style={styles.iconMedium} color="#4A90E2" />;
-
-            return (
-              <Card key={day.datetime} style={styles.dailyCard}>
-                <Text style={styles.dailyTitle}>
-                  {new Date(day.datetime).toLocaleDateString('es-AR', {
-                    weekday: 'long',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </Text>
-                <View style={styles.dailyContent}>
-                  <View style={styles.dailyInfo}>
-                    {dailyIcon}
-                    <View style={styles.dailyText}>
-                      <Text style={styles.dailyTemp}>{day.temp}°C</Text>
-                      <Badge style={styles.badge}>{dailyCondition}</Badge>
-                    </View>
-                  </View>
-                  <View style={styles.dailyDetails}>
-                    <Text style={styles.dailyDetailText}>Máx: {day.tempmax}°C</Text>
-                    <Text style={styles.dailyDetailText}>Mín: {day.tempmin}°C</Text>
-                  </View>
-                </View>
-                <View style={styles.dailyProbabilities}>
-                  <Text style={styles.probabilityText}>Probabilidad de lluvia</Text>
-                  <Progress value={day.precipprob} style={styles.progress} />
-                  <Text style={styles.probabilityText}>Humedad</Text>
-                  <Progress value={day.humidity} style={styles.progress} />
-                </View>
-              </Card>
-            );
-          })}
-        </View>
-      </ScrollView>
-    </LinearGradient>
+                data: maxTemps,
+                color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
+                strokeWidth: 2,
+              },
+              {
+                data: minTemps,
+                color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
+                strokeWidth: 2,
+              },
+            ],
+          }}
+          width={Dimensions.get('window').width - 40}
+          height={220}
+          chartConfig={{
+            backgroundColor: '#e0f7fa',
+            backgroundGradientFrom: '#e0f7fa',
+            backgroundGradientTo: '#e0f7fa',
+            decimalPlaces: 1,
+            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+          }}
+          bezier
+          style={{
+            marginVertical: 8,
+            borderRadius: 16,
+          }}
+        />
+      </View>
+    </ScrollView>
   );
 };
-
-const DetailRow: React.FC<{ icon: React.ReactNode; label: string; value: string }> = ({ icon, label, value }) => (
-  <View style={styles.detailRow}>
-    <View style={styles.detailIcon}>{icon}</View>
-    <Text style={styles.detailLabel}>{label}</Text>
-    <Text style={styles.detailValue}>{value}</Text>
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f0f0f0',
     padding: 16,
   },
   loadingContainer: {
@@ -209,180 +208,125 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    marginTop: 8,
-    fontSize: 18,
-    color: 'black',
+    marginTop: 10,
+    fontSize: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 16,
-    color: 'black',
+    marginBottom: 8,
   },
-  currentConditionsContainer: {
+  date: {
+    fontSize: 16,
+    textAlign: 'center',
     marginBottom: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 8,
     padding: 16,
-    borderRadius: 12,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  currentConditionsTitle: {
-    fontSize: 20,
+  cardTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: 'black',
   },
   currentConditions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 16,
   },
-  currentConditionsInfo: {
+  currentMain: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  currentTemp: {
-    fontSize: 40,
+  weatherIcon: {
+    width: 64,
+    height: 64,
+    marginRight: 16,
+  },
+  temperature: {
+    fontSize: 36,
     fontWeight: 'bold',
-    marginLeft: 8,
-    color: '#ffffff',
   },
-  currentCondition: {
-    fontSize: 16,
-    color: '#ffffff',
+  condition: {
+    fontSize: 18,
   },
-  details: {
-    marginLeft: 16,
+  currentDetails: {
+    alignItems: 'flex-end',
+  },
+  detailsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   detailText: {
     fontSize: 14,
-    color: 'black',
+    marginBottom: 4,
+    width: '48%',
   },
-  card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-  },
-  detailsContainer: {
-    padding: 8,
-  },
-  detailsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: 'black',
-  },
-  dailyForecastContainer: {
-    marginTop: 16,
-  },
-  hourlyForecastContainer: {
-    marginTop: 8,
-  },
-  hourlyForecastItem: {
+  hourlyForecast: {
     alignItems: 'center',
     marginRight: 16,
   },
-  hourText: {
-    fontSize: 12,
-    color: 'black',
-  },
-  hourTemp: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  hourCondition: {
-    fontSize: 12,
-    color: 'black',
-  },
-  dailyCard: {
-    marginBottom: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 12,
-    padding: 16,
-  },
-  dailyTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  dailyContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 8,
-  },
-  dailyInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dailyText: {
-    marginLeft: 8,
-  },
-  dailyTemp: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#ffffff',
-  },
-  dailyProbabilities: {
-    marginTop: 8,
-  },
-  probabilityText: {
+  hourlyTime: {
     fontSize: 14,
-    color: 'black',
+    marginBottom: 4,
   },
-  detailRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  detailIcon: {
-    marginRight: 8,
-  },
-  detailLabel: {
-    flex: 1,
-    fontSize: 14,
-    color: 'black',
-  },
-  detailValue: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  icon: {
-    width: 40,
-    height: 40,
-  },
-  iconSmall: {
-    width: 24,
-    height: 24,
-  },
-  iconMedium: {
+  smallWeatherIcon: {
     width: 32,
     height: 32,
   },
-  badge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderColor: '#ffffff',
-  },
-  progress: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    fillColor: '#ffffff',
-  },
-  forecastTitle: {
-    fontSize: 18,
+  hourlyTemp: {
+    fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 8,
-    color: 'black',
   },
-  dailyDetails: {
-    alignItems: 'flex-end',
+  dailyForecastContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
-  dailyDetailText: {
+  dailyForecast: {
+    width: '48%',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 12,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  dailyDate: {
     fontSize: 14,
-    color: 'black',
+    marginBottom: 4,
+  },
+  dailyTemps: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 4,
+  },
+  maxTemp: {
+    fontSize: 14,
+    color: 'red',
+  },
+  minTemp: {
+    fontSize: 14,
+    color: 'blue',
   },
 });
 
 export default WeatherPage;
+
