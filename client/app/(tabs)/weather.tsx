@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, Dimensions, LogBox } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
 // Import weather icons
@@ -29,14 +29,18 @@ const WeatherPage: React.FC = () => {
       setLoading(true);
       try {
         const response = await fetch('https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/formosa%20argentina?unitGroup=metric&key=UMQ9KWF37S9T6WL8J4WLN5Q23&contentType=json');
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
         const data = await response.json();
         setWeatherData(data);
       } catch (error) {
-        console.error('Error fetching weather data:', error);
+        console.error('Error fetching weather data:', error.message || error);
       } finally {
         setLoading(false);
       }
     };
+    
 
     fetchWeatherData();
   }, []);
@@ -52,11 +56,14 @@ const WeatherPage: React.FC = () => {
   const formattedDate = `${daysOfWeek[currentDate.getDay()]} ${currentDate.getDate()} de ${monthsOfYear[currentDate.getMonth()]}`;
 
   const current = weatherData.currentConditions;
-  const currentCondition = {
+  const possibleConditions = {
     'Clear': 'Despejado',
     'Partially cloudy': 'Parcialmente Nublado',
+    'Rain, Partially cloudy':'Lluvia,Parcial',
     'Cloudy': 'Nublado',
     'Rain': 'Lluvia',
+    'Rain, Overcast': 'Lluvia, Cubierto',
+    'Rain, Partially cloudy': 'Lluvia, Parcialmente Nublado',
     'Thunderstorms': 'Tormentas',
     'Snow': 'Nieve',
     'Fog': 'Niebla',
@@ -66,7 +73,9 @@ const WeatherPage: React.FC = () => {
     'Showers': 'Aguaceros',
     'Freezing Rain': 'Lluvia Helada',
     'Sleet': 'Aguacero de Hielo',
-  }[current.conditions] || current.conditions;
+ 
+  }
+  const currentCondition = possibleConditions[current.conditions as keyof typeof possibleConditions] || current.conditions;
 
   const weatherIcons: { [key: string]: any } = {
     'Clear': sol,
@@ -155,43 +164,47 @@ const WeatherPage: React.FC = () => {
         ))}
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Gráfico de Temperaturas (15 Días)</Text>
-        <LineChart
-          data={{
-            labels: labels,
-            datasets: [
-              {
-                data: maxTemps,
-                color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
-                strokeWidth: 2,
-              },
-              {
-                data: minTemps,
-                color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
-                strokeWidth: 2,
-              },
-            ],
-          }}
-          width={Dimensions.get('window').width - 40}
-          height={220}
-          chartConfig={{
-            backgroundColor: '#e0f7fa',
-            backgroundGradientFrom: '#e0f7fa',
-            backgroundGradientTo: '#e0f7fa',
-            decimalPlaces: 1,
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
-          }}
-          bezier
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
-        />
-      </View>
+      <View style={styles.chartContainer}>
+  {/* <LineChart
+    data={{
+      labels: labels,
+      datasets: [
+        {
+          data: maxTemps,
+          color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
+          strokeWidth: 2,
+        },
+        {
+          data: minTemps,
+          color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
+          strokeWidth: 2,
+        },
+      ],
+    }}
+    width={Dimensions.get('window').width - 40}
+    height={260} // Aumentar la altura del gráfico
+    chartConfig={{
+      backgroundColor: '#e0f7fa',
+      backgroundGradientFrom: '#e0f7fa',
+      backgroundGradientTo: '#e0f7fa',
+      decimalPlaces: 1,
+      color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+      style: {
+        borderRadius: 16,
+      },
+      propsForLabels: {
+        fontSize: 10, // Reducir el tamaño de las etiquetas si es necesario
+      },
+    }}
+    bezier
+    style={{
+      marginVertical: 8,
+      borderRadius: 16,
+      paddingBottom: 20, // Agregar espacio adicional debajo
+    }}
+  /> */}
+</View>
+
     </ScrollView>
   );
 };

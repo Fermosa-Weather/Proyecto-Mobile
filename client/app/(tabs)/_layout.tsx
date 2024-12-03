@@ -1,7 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Dimensions, Platform, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
@@ -15,17 +14,10 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: 'black', // Color negro para los íconos activos
+        tabBarInactiveTintColor: 'gray', // Color gris para los íconos inactivos
         headerShown: false,
         tabBarStyle: styles.tabBarContainer,
-        tabBarBackground: () => (
-          <LinearGradient
-            colors={['#4B0082', '#0000FF']} // Gradiente de violeta a azul
-            start={[0, 0]} // Esquina superior izquierda
-            end={[1, 1]} // Esquina inferior derecha
-            style={StyleSheet.absoluteFillObject} // Rellenar todo el espacio disponible
-          />
-        ),
       }}
     >
       <Tabs.Screen
@@ -73,13 +65,14 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 70 : 60, // Altura ajustada para iOS y Android
     paddingBottom: Platform.OS === 'ios' ? 10 : 5,
     paddingTop: Platform.OS === 'ios' ? 10 : 5,
+    backgroundColor: 'white', // Fondo blanco
     width: '100%', // Ancho completo
     alignSelf: 'center',
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    overflow: 'hidden', // Asegura que el gradiente no se desborde
+    overflow: 'hidden', // Asegura que no se desborde
     paddingHorizontal: 10, // Margen horizontal
   },
 });
