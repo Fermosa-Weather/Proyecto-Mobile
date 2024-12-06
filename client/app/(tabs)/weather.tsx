@@ -120,15 +120,82 @@ const WeatherPage: React.FC = () => {
           <Text style={styles.detailText}>Viento: {current.windspeed} km/h</Text>
         </View>
       </View>
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Detalles</Text>
-        <View style={styles.detailsGrid}>
-          <Text style={styles.detailText}>Amanecer: {current.sunrise}</Text>
-          <Text style={styles.detailText}>Atardecer: {current.sunset}</Text>
-          <Text style={styles.detailText}>Precipitación: {current.precip ? `${current.precip} mm` : "N/A"}</Text>
-          <Text style={styles.detailText}>Presión: {current.pressure} hPa</Text>
-        </View>
-      </View>
+      <View style={{
+  backgroundColor: '#f5f5f5',
+  borderRadius: 10,
+  padding: 15,
+  marginVertical: 10,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.2,
+  shadowRadius: 4,
+}}>
+  <Text style={{
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#333',
+  }}>
+    Detalles
+  </Text>
+  <View style={{
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <View style={{
+      width: '45%',
+      marginBottom: 10,
+    }}>
+      <Text style={{
+        fontSize: 16,
+        fontWeight: '400',
+        color: '#000',
+      }}>
+        Amanecer: {current.sunrise}
+      </Text>
+    </View>
+    <View style={{
+      width: '45%',
+      marginBottom: 10,
+    }}>
+      <Text style={{
+        fontSize: 16,
+        fontWeight: '400',
+        color: '#000',
+      }}>
+        Atardecer: {current.sunset}
+      </Text>
+    </View>
+    <View style={{
+      width: '45%',
+      marginBottom: 10,
+    }}>
+      <Text style={{
+        fontSize: 16,
+        fontWeight: '400',
+        color: '#000',
+      }}>
+        Precipitación: {current.precip ? `${current.precip} mm` : "N/A"}
+      </Text>
+    </View>
+    <View style={{
+      width: '45%',
+      marginBottom: 10,
+    }}>
+      <Text style={{
+        fontSize: 16,
+        fontWeight: '400',
+        color: '#000',
+      }}>
+        Presión: {current.pressure} hPa
+      </Text>
+    </View>
+  </View>
+</View>
+
 
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Pronóstico por horas</Text>
