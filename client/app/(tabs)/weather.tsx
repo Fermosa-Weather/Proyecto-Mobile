@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, Dimensions, LogBox } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
-// Import weather icons
+// Importar íconos de clima
 import sol from '../../images/icons_weather/sol.png';
 import nubes from '../../images/icons_weather/parcialmente_nublado.png';
 import parcialmente_nublado from '../../images/icons_weather/nube.png';
@@ -40,7 +40,6 @@ const WeatherPage: React.FC = () => {
         setLoading(false);
       }
     };
-    
 
     fetchWeatherData();
   }, []);
@@ -73,8 +72,7 @@ const WeatherPage: React.FC = () => {
     'Showers': 'Aguaceros',
     'Freezing Rain': 'Lluvia Helada',
     'Sleet': 'Aguacero de Hielo',
- 
-  }
+  };
   const currentCondition = possibleConditions[current.conditions as keyof typeof possibleConditions] || current.conditions;
 
   const weatherIcons: { [key: string]: any } = {
@@ -125,16 +123,16 @@ const WeatherPage: React.FC = () => {
           <Text style={styles.detailText}>Viento: {current.windspeed} km/h</Text>
         </View>
       </View>
-
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Detalles</Text>
-        <View style={styles.detailsGrid}>
-          <Text style={styles.detailText}>Amanecer: {current.sunrise}</Text>
-          <Text style={styles.detailText}>Atardecer: {current.sunset}</Text>
-          <Text style={styles.detailText}>Precipitación: {current.precip ? `${current.precip} mm` : "N/A"}</Text>
-          <Text style={styles.detailText}>Presión: {current.pressure} hPa</Text>
-        </View>
-      </View>
+  <Text style={styles.cardTitle}>Detalles</Text>
+  <View style={styles.detailsGrid}>
+    <Text style={styles.detailText}>Amanecer: {current.sunrise}</Text>
+    <Text style={styles.detailText}>Atardecer: {current.sunset}</Text>
+    <Text style={styles.detailText}>Precipitación: {current.precip ? `${current.precip} mm` : "N/A"}</Text>
+    <Text style={styles.detailText}>Presión: {current.pressure} hPa</Text>
+  </View>
+</View>
+
 
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Pronóstico por horas</Text>
@@ -150,7 +148,7 @@ const WeatherPage: React.FC = () => {
       </View>
 
       <View style={styles.dailyForecastContainer}>
-        {weatherData.days.slice(1, 9).map((day: any, index: number) => (
+        {weatherData.days.slice(1, 10).map((day: any, index: number) => (
           <View key={index} style={styles.dailyForecast}>
             <Text style={styles.dailyDate}>
               {new Date(day.datetime).toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric' })}
@@ -165,45 +163,8 @@ const WeatherPage: React.FC = () => {
       </View>
 
       <View style={styles.chartContainer}>
-  {/* <LineChart
-    data={{
-      labels: labels,
-      datasets: [
-        {
-          data: maxTemps,
-          color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
-          strokeWidth: 2,
-        },
-        {
-          data: minTemps,
-          color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
-          strokeWidth: 2,
-        },
-      ],
-    }}
-    width={Dimensions.get('window').width - 40}
-    height={260} // Aumentar la altura del gráfico
-    chartConfig={{
-      backgroundColor: '#e0f7fa',
-      backgroundGradientFrom: '#e0f7fa',
-      backgroundGradientTo: '#e0f7fa',
-      decimalPlaces: 1,
-      color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-      style: {
-        borderRadius: 16,
-      },
-      propsForLabels: {
-        fontSize: 10, // Reducir el tamaño de las etiquetas si es necesario
-      },
-    }}
-    bezier
-    style={{
-      marginVertical: 8,
-      borderRadius: 16,
-      paddingBottom: 20, // Agregar espacio adicional debajo
-    }}
-  /> */}
-</View>
+        {/* Código para el gráfico */}
+      </View>
 
     </ScrollView>
   );
@@ -235,111 +196,111 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
   },
-  card: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
   currentConditions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   currentMain: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   weatherIcon: {
-    width: 64,
-    height: 64,
+    width: 80,
+    height: 80,
     marginRight: 16,
   },
   temperature: {
-    fontSize: 36,
+    fontSize: 40,
     fontWeight: 'bold',
   },
   condition: {
-    fontSize: 18,
+    fontSize: 16,
+    color: '#555',
   },
   currentDetails: {
-    alignItems: 'flex-end',
+    justifyContent: 'space-around',
+  },
+  detailText: {
+    fontSize: 14,
+  },
+  card: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 12,
   },
   detailsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  detailText: {
-    fontSize: 14,
-    marginBottom: 4,
-    width: '48%',
   },
   hourlyForecast: {
+    width: 60,
     alignItems: 'center',
-    marginRight: 16,
+    marginRight: 10,
   },
   hourlyTime: {
-    fontSize: 14,
+    fontSize: 12,
     marginBottom: 4,
   },
   smallWeatherIcon: {
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
+    marginBottom: 4,
   },
   hourlyTemp: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   dailyForecastContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   dailyForecast: {
-    width: '48%',
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 12,
+    flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    marginBottom: 10,
   },
   dailyDate: {
     fontSize: 14,
-    marginBottom: 4,
+    marginRight: 8,
   },
   dailyTemps: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginTop: 4,
+    marginLeft: 'auto',
   },
   maxTemp: {
-    fontSize: 14,
-    color: 'red',
+    fontSize: 16,
+    color: '#f44336',
   },
   minTemp: {
-    fontSize: 14,
-    color: 'blue',
+    fontSize: 16,
+    color: '#2196f3',
+    marginLeft: 8,
   },
+  chartContainer: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  detailsGrid: {
+    flexDirection: 'row',   // Los elementos estarán uno al lado del otro
+    justifyContent: 'space-between',  // Espacio igual entre cada elemento
+    alignItems: 'center',  // Alineación centrada verticalmente
+    marginTop: 10,
+  },
+  detailText: {
+    flex: 1,  // Hace que cada texto ocupe el mismo espacio
+    textAlign: 'center',  // Alineación centrada
+  },
+  
 });
 
 export default WeatherPage;
-
