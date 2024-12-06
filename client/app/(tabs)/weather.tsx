@@ -58,11 +58,8 @@ const WeatherPage: React.FC = () => {
   const possibleConditions = {
     'Clear': 'Despejado',
     'Partially cloudy': 'Parcialmente Nublado',
-    'Rain, Partially cloudy':'Lluvia,Parcial',
     'Cloudy': 'Nublado',
     'Rain': 'Lluvia',
-    'Rain, Overcast': 'Lluvia, Cubierto',
-    'Rain, Partially cloudy': 'Lluvia, Parcialmente Nublado',
     'Thunderstorms': 'Tormentas',
     'Snow': 'Nieve',
     'Fog': 'Niebla',
@@ -112,7 +109,7 @@ const WeatherPage: React.FC = () => {
       <View style={styles.currentConditions}>
         <View style={styles.currentMain}>
           <Image source={getIcon(current.conditions)} style={styles.weatherIcon} />
-          <View>
+          <View style={styles.weatherDetails}>
             <Text style={styles.temperature}>{current.temp}°C</Text>
             <Text style={styles.condition}>{currentCondition}</Text>
           </View>
@@ -124,15 +121,14 @@ const WeatherPage: React.FC = () => {
         </View>
       </View>
       <View style={styles.card}>
-  <Text style={styles.cardTitle}>Detalles</Text>
-  <View style={styles.detailsGrid}>
-    <Text style={styles.detailText}>Amanecer: {current.sunrise}</Text>
-    <Text style={styles.detailText}>Atardecer: {current.sunset}</Text>
-    <Text style={styles.detailText}>Precipitación: {current.precip ? `${current.precip} mm` : "N/A"}</Text>
-    <Text style={styles.detailText}>Presión: {current.pressure} hPa</Text>
-  </View>
-</View>
-
+        <Text style={styles.cardTitle}>Detalles</Text>
+        <View style={styles.detailsGrid}>
+          <Text style={styles.detailText}>Amanecer: {current.sunrise}</Text>
+          <Text style={styles.detailText}>Atardecer: {current.sunset}</Text>
+          <Text style={styles.detailText}>Precipitación: {current.precip ? `${current.precip} mm` : "N/A"}</Text>
+          <Text style={styles.detailText}>Presión: {current.pressure} hPa</Text>
+        </View>
+      </View>
 
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Pronóstico por horas</Text>
@@ -153,7 +149,9 @@ const WeatherPage: React.FC = () => {
             <Text style={styles.dailyDate}>
               {new Date(day.datetime).toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric' })}
             </Text>
-            <Image source={getIcon(day.conditions)} style={styles.smallWeatherIcon} />
+            <View style={styles.iconContainer}>
+              <Image source={getIcon(day.conditions)} style={styles.smallWeatherIcon} />
+            </View>
             <View style={styles.dailyTemps}>
               <Text style={styles.maxTemp}>{day.tempmax}°C</Text>
               <Text style={styles.minTemp}>{day.tempmin}°C</Text>
@@ -165,7 +163,6 @@ const WeatherPage: React.FC = () => {
       <View style={styles.chartContainer}>
         {/* Código para el gráfico */}
       </View>
-
     </ScrollView>
   );
 };
@@ -204,31 +201,37 @@ const styles = StyleSheet.create({
   currentMain: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   weatherIcon: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     marginRight: 16,
   },
+  weatherDetails: {
+    justifyContent: 'center',
+  },
   temperature: {
-    fontSize: 40,
+    fontSize: 36,
     fontWeight: 'bold',
   },
   condition: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: 18,
+    color: '#888',
   },
   currentDetails: {
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    flex: 1,
   },
   detailText: {
-    fontSize: 14,
+    fontSize: 16,
+    marginBottom: 8,
   },
   card: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 8,
     marginBottom: 20,
+    padding: 16,
+    backgroundColor: '#fff',
+    borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -244,21 +247,21 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   hourlyForecast: {
-    width: 60,
+    width: 70,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 16,
   },
   hourlyTime: {
-    fontSize: 12,
+    fontSize: 14,
     marginBottom: 4,
   },
   smallWeatherIcon: {
     width: 30,
     height: 30,
-    marginBottom: 4,
   },
   hourlyTemp: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   dailyForecastContainer: {
@@ -266,16 +269,22 @@ const styles = StyleSheet.create({
   },
   dailyForecast: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
   },
   dailyDate: {
     fontSize: 14,
-    marginRight: 8,
+    textAlign: 'left',
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
   },
   dailyTemps: {
     flexDirection: 'row',
-    marginLeft: 'auto',
+    justifyContent: 'space-between',
   },
   maxTemp: {
     fontSize: 16,
@@ -287,20 +296,8 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   chartContainer: {
-    marginTop: 20,
     marginBottom: 20,
   },
-  detailsGrid: {
-    flexDirection: 'row',   // Los elementos estarán uno al lado del otro
-    justifyContent: 'space-between',  // Espacio igual entre cada elemento
-    alignItems: 'center',  // Alineación centrada verticalmente
-    marginTop: 10,
-  },
-  detailText: {
-    flex: 1,  // Hace que cada texto ocupe el mismo espacio
-    textAlign: 'center',  // Alineación centrada
-  },
-  
 });
 
 export default WeatherPage;
